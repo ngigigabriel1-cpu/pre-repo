@@ -64,7 +64,10 @@
             }
             .nav-links.open { opacity: 1; visibility: visible; transform: translateY(0); }
             .nav-links a { padding: 12px 18px; width: 100%; display: block; font-size: 1rem; }
-            .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; padding-left: 8px; width: 100%; }
+            .dropdown-menu { display: none; position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; padding-left: 8px; width: 100%; background: transparent; }
+            .dropdown.open > .dropdown-menu { display: block; }
+            .dropdown > a::after { content: '▸'; float: right; transform: rotate(0deg); transition: transform 0.2s ease; }
+            .dropdown.open > a::after { transform: rotate(90deg); }
             .dropdown-menu li a { padding-left: 24px; }
         }
     </style>
@@ -76,7 +79,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="index.html#about">About</a></li>
             <li class="dropdown">
-                <a href="index.html#services">Services</a>
+                <a href="index.html#services" aria-haspopup="true" aria-expanded="false">Services</a>
                 <ul class="dropdown-menu">
                     <li><a href="corporate-services.html">Employee Assistance (EAP)</a></li>
                     <li><a href="corporate-services.html">Team Building & Bonding</a></li>
@@ -276,22 +279,42 @@
     </div>
 
     <script>
+        // Mobile menu, dropdown toggle, overlay
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
 
-        if (hamburger) {
-            hamburger.addEventListener('click', () => {
-                navLinks.classList.toggle('open');
-                hamburger.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
-            });
+        const setNavOpen = (open) => {
+            navLinks.classList.toggle('open', open);
+            hamburger.textContent = open ? '✕' : '☰';
+            hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open) {
+                if (!document.getElementById('nav-overlay')) {
+                    const ov = document.createElement('div'); ov.id = 'nav-overlay';
+                    ov.style.position = 'fixed'; ov.style.left = '0'; ov.style.top = '0'; ov.style.right = '0'; ov.style.bottom = '0';
+                    ov.style.zIndex = '1400'; ov.addEventListener('click', () => setNavOpen(false));
+                    document.body.appendChild(ov);
+                }
+            } else {
+                const ov = document.getElementById('nav-overlay'); if (ov) ov.remove();
+            }
+        };
 
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', () => {
-                    navLinks.classList.remove('open');
-                    hamburger.textContent = '☰';
-                });
+        hamburger.addEventListener('click', () => setNavOpen(!navLinks.classList.contains('open')) );
+        document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => setNavOpen(false)));
+
+        // Dropdown toggle on touch
+        document.querySelectorAll('.dropdown > a').forEach(anchor => {
+            anchor.setAttribute('aria-haspopup', 'true');
+            anchor.setAttribute('aria-expanded', 'false');
+            anchor.addEventListener('click', (e) => {
+                if (window.innerWidth <= 900) {
+                    e.preventDefault();
+                    const li = anchor.parentElement;
+                    const isOpen = li.classList.toggle('open');
+                    anchor.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                }
             });
-        }
+        });
     </script>
 </body>
-</html>
+</html> 

@@ -158,6 +158,9 @@
         
         .hero-image-container img { width: 100%; height: 100%; object-fit: cover; }
 
+        /* Option to show full hero image without cropping */
+        .hero-img-contain { object-fit: contain; background: #f7f6f3; }
+
         /* --- 4. ABOUT SECTION --- */
         .about-bio-section {
             padding: 100px 5%;
@@ -364,42 +367,59 @@
 
         @media (max-width: 900px) {
             .navbar { padding: 12px 16px; }
-            .hamburger { display: block; font-size: 1.6rem; background: transparent; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+            .hamburger { display: block; font-size: 1.6rem; background: transparent; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; color: var(--text-dark); }
+
+            /* Mobile nav panel */
             .nav-links {
-                position: fixed; top: 64px; right: 0; width: 100%; max-height: calc(100vh - 64px);
-                background: white; flex-direction: column; align-items: flex-start;
-                padding: 14px 12px; gap: 0; transform: translateY(-10px);
+                position: fixed; top: 64px; right: 12px; left: 12px; height: calc(100vh - 80px);
+                background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,244,240,0.98));
+                flex-direction: column; align-items: stretch; padding: 16px; gap: 6px; transform: translateY(-6px);
                 transition: transform 0.28s ease, opacity 0.28s ease; opacity: 0; visibility: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-                overflow-y: auto; z-index: 1500;
+                overflow-y: auto; z-index: 1500; border-radius: 12px; border: 1px solid rgba(0,0,0,0.04);
             }
             .nav-links.open { opacity: 1; visibility: visible; transform: translateY(0); }
-            .nav-links a { padding: 12px 18px; width: 100%; display: block; font-size: 1rem; }
+            .nav-links a { padding: 14px 18px; width: 100%; display: block; font-size: 1rem; border-radius: 10px; color: var(--text-dark); }
+            .nav-links a:hover { background: rgba(212,163,115,0.08); color: var(--primary); }
 
-            .dropdown-menu {
-                position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; padding-left: 8px; width: 100%;
-            }
-            .dropdown-menu li a { padding-left: 24px; }
+            /* Visually separate items */
+            .nav-links li { border-bottom: 1px solid rgba(0,0,0,0.04); }
+            .nav-links li:last-child { border-bottom: none; }
 
+            /* Dropdown behavior on mobile: collapsed by default, expand by JS toggling .open */
+            .dropdown-menu { display: none; position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; padding: 0; width: 100%; background: transparent; }
+            .dropdown.open > .dropdown-menu { display: block; }
+            .dropdown > a::after { content: '▸'; float: right; transform: rotate(0deg); transition: transform 0.2s ease; }
+            .dropdown.open > a::after { transform: rotate(90deg); }
+            .dropdown-menu li a { padding: 14px 22px; padding-left: 28px; border-radius: 8px; }
+
+            /* Hero, bio and content stacking */
             .hero { grid-template-columns: 1fr; padding-top: 120px; padding-bottom: 40px; min-height: auto; }
-            .hero-image-container { height: 260px; margin-top: 18px; }
+            .hero-image-container { height: 240px; margin-top: 12px; }
             h1 { font-size: 2rem; }
 
-            .bio-container { grid-template-columns: 1fr; gap: 24px; padding: 0 12px; }
+            .bio-container { grid-template-columns: 1fr; gap: 20px; padding: 0 12px; }
             .bio-image { height: auto; width: 100%; }
 
-            .services-grid { grid-template-columns: 1fr; gap: 20px; padding: 0 12px; }
-            .service-card { padding: 20px; border-radius: 12px; }
-            .service-cta-btn, .service-link-btn, .service-cta-btn, .read-more-btn, .btn-nav { width: 100%; justify-content: center; box-sizing: border-box; }
+            /* Services/cards and CTAs full width */
+            .services-grid { grid-template-columns: 1fr; gap: 18px; padding: 0 12px; }
+            .service-card { padding: 18px; border-radius: 12px; }
+            .service-cta-btn, .service-link-btn, .read-more-btn, .btn-nav { width: 100%; justify-content: center; box-sizing: border-box; }
 
+            /* Gallery and client grids stacked */
             .gallery-grid, .clients-grid { grid-template-columns: 1fr; }
             .gallery-item, .client-card { margin: 0 auto; }
 
-            .carousel-track { animation: none; display: flex; flex-wrap: wrap; justify-content: center; }
-            .client-item { width: 45%; margin: 6px; }
+            /* Mobile-friendly logo carousel: horizontal scroll with snap */
+            .carousel-track { animation: none; display: flex; gap: 12px; overflow-x: auto; padding: 10px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+            .client-item { flex: 0 0 auto; width: 140px; height: 90px; display: flex; align-items: center; justify-content: center; background: white; border-radius: 12px; padding: 8px; box-shadow: var(--shadow); scroll-snap-align: center; }
+            .client-logo-img { width: 64px; height: 64px; border-radius: 8px; object-fit: contain; }
 
-            .image-grid-2col { grid-template-columns: 1fr; }
+            /* Image grids: enforce consistent heights on mobile for cleaner layout */
+            .image-grid-2col { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .image-placeholder { height: 160px; border-radius: 12px; overflow: hidden; }
+            .image-placeholder img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-            .quote { font-size: 1.2rem; }
+            .quote { font-size: 1.05rem; }
         }
         .responsive{
             max-width: 100%;
@@ -408,4 +428,40 @@
         .bio-image{
             max-width: 100%;
             height: auto;
+        }
+        
+        /* Extra small phones — tighten spacing and font-sizes */
+        @media (max-width: 480px) {
+            :root { --small-gap: 12px; }
+
+            .navbar { padding: 10px 12px; }
+            .logo-container { font-size: 1.1rem; }
+            .hamburger { font-size: 1.4rem; padding: 6px 8px; }
+
+            .nav-links { top: 56px; left: 8px; right: 8px; height: calc(100vh - 72px); padding: 10px; }
+            .nav-links a { padding: 12px 14px; font-size: 0.95rem; }
+
+            .hero { padding-top: 100px; }
+            .hero-content h1 { font-size: 1.8rem; }
+            .hero-tagline { font-size: 1rem; }
+            .hero-image-container { height: 180px; }
+
+            .bio-text h2 { font-size: 1.4rem; }
+            .bio-paragraph { font-size: 0.98rem; }
+
+            .service-card { padding: 14px; }
+            .service-card h3 { font-size: 1.15rem; }
+            .service-list li { font-size: 0.98rem; }
+
+            .image-grid-2col { grid-template-columns: 1fr; }
+            .image-placeholder { height: 140px; }
+
+            .carousel-track { gap: 10px; padding: 8px; }
+            .client-item { width: 120px; height: 76px; }
+            .client-logo-img { width: 56px; height: 56px; }
+
+            .stat-card .number { font-size: 1.4rem; }
+            .stat-card { padding: 16px; }
+
+            .btn-nav, .service-cta-btn, .read-more-btn { padding: 12px 18px; font-size: 0.98rem; }
         }

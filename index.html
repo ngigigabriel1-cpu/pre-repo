@@ -16,7 +16,7 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About Joseph</a></li>
             <li class="dropdown">
-                <a href="#services">Services</a>
+                <a href="#services" aria-haspopup="true" aria-expanded="false">Services</a>
                 <ul class="dropdown-menu">
                     <li><a href="corporate-services.html">Employee Assistance (EAP)</a></li>
                     <li><a href="corporate-services.html">Team Building & Bonding</a></li>
@@ -47,7 +47,7 @@
         </div>
         
         <div class="hero-image-container reveal">
-            <img src="images/backman.jpg" alt="Joseph Nginya" class="responsive">
+            <img src="images/backman.jpg" alt="Joseph Nginya" class="responsive hero-img-contain">
         </div>
     </header>
 
@@ -182,21 +182,70 @@
     </footer>
 
     <script>
-        // Mobile Menu
+        // Mobile Menu + Dropdown toggle + overlay + carousel auto-scroll
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
 
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
-            hamburger.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
-        });
+        const setNavOpen = (open) => {
+            navLinks.classList.toggle('open', open);
+            hamburger.textContent = open ? '✕' : '☰';
+            hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open) {
+                if (!document.getElementById('nav-overlay')) {
+                    const ov = document.createElement('div'); ov.id = 'nav-overlay';
+                    ov.style.position = 'fixed'; ov.style.left = '0'; ov.style.top = '0'; ov.style.right = '0'; ov.style.bottom = '0';
+                    ov.style.zIndex = '1400'; ov.addEventListener('click', () => setNavOpen(false));
+                    document.body.appendChild(ov);
+                }
+            } else {
+                const ov = document.getElementById('nav-overlay'); if (ov) ov.remove();
+            }
+        };
+
+        hamburger.addEventListener('click', () => setNavOpen(!navLinks.classList.contains('open')) );
 
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
-                navLinks.classList.remove('open');
-                hamburger.textContent = '☰';
+                setNavOpen(false);
             });
         });
+
+        // Dropdown toggle for touch devices
+        document.querySelectorAll('.dropdown > a').forEach(anchor => {
+            anchor.setAttribute('aria-haspopup', 'true');
+            anchor.setAttribute('aria-expanded', 'false');
+            anchor.addEventListener('click', (e) => {
+                if (window.innerWidth <= 900) {
+                    e.preventDefault();
+                    const li = anchor.parentElement;
+                    const isOpen = li.classList.toggle('open');
+                    anchor.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                }
+            });
+        });
+
+        // Carousel auto-scroll (mobile)
+        const carousel = document.querySelector('.carousel-track');
+        if (carousel) {
+            carousel.style.scrollBehavior = 'smooth';
+            let auto;
+            const startAuto = () => {
+                if (auto) return;
+                auto = setInterval(() => {
+                    if (carousel.scrollWidth - carousel.scrollLeft <= carousel.clientWidth + 2) {
+                        carousel.scrollTo({ left: 0 });
+                    } else {
+                        carousel.scrollBy({ left: 2 });
+                    }
+                }, 30);
+            };
+            const stopAuto = () => { if (auto) { clearInterval(auto); auto = null; } };
+            carousel.addEventListener('mouseenter', stopAuto);
+            carousel.addEventListener('mouseleave', startAuto);
+            carousel.addEventListener('touchstart', stopAuto, {passive:true});
+            carousel.addEventListener('touchend', startAuto, {passive:true});
+            startAuto();
+        }
 
         // Scroll Animation
         const revealElements = document.querySelectorAll('.reveal');
