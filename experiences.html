@@ -384,28 +384,7 @@
             });
         });
 
-        // Make logo carousel auto-scroll on mobile as well
-        const carousel = document.querySelector('.carousel-track');
-        if (carousel) {
-            carousel.style.scrollBehavior = 'smooth';
-            let auto;
-            const startAuto = () => {
-                if (auto) return;
-                auto = setInterval(() => {
-                    if (carousel.scrollWidth - carousel.scrollLeft <= carousel.clientWidth + 2) {
-                        carousel.scrollTo({ left: 0 });
-                    } else {
-                        carousel.scrollBy({ left: 2 });
-                    }
-                }, 30);
-            };
-            const stopAuto = () => { if (auto) { clearInterval(auto); auto = null; } };
-            carousel.addEventListener('mouseenter', stopAuto);
-            carousel.addEventListener('mouseleave', startAuto);
-            carousel.addEventListener('touchstart', stopAuto, {passive:true});
-            carousel.addEventListener('touchend', startAuto, {passive:true});
-            startAuto();
-        }
+        // Logo carousel animation is handled by CSS for mobile
     </script>
 </body>
 </html>

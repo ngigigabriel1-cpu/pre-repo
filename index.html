@@ -245,28 +245,7 @@
             });
         });
 
-        // Carousel auto-scroll (mobile)
-        const carousel = document.querySelector('.carousel-track');
-        if (carousel) {
-            carousel.style.scrollBehavior = 'smooth';
-            let auto;
-            const startAuto = () => {
-                if (auto) return;
-                auto = setInterval(() => {
-                    if (carousel.scrollWidth - carousel.scrollLeft <= carousel.clientWidth + 2) {
-                        carousel.scrollTo({ left: 0 });
-                    } else {
-                        carousel.scrollBy({ left: 4 });
-                    }
-                }, 30);
-            };
-            const stopAuto = () => { if (auto) { clearInterval(auto); auto = null; } };
-            carousel.addEventListener('mouseenter', stopAuto);
-            carousel.addEventListener('mouseleave', startAuto);
-            carousel.addEventListener('touchstart', stopAuto, {passive:true});
-            carousel.addEventListener('touchend', startAuto, {passive:true});
-            startAuto();
-        }
+        // Carousel auto-scroll is handled by CSS animation for mobile
 
         // Scroll Animation
         const revealElements = document.querySelectorAll('.reveal');
