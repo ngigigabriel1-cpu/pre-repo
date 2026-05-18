@@ -18,15 +18,25 @@
             <li class="dropdown">
                 <a href="#services" aria-haspopup="true" aria-expanded="false">Services</a>
                 <ul class="dropdown-menu">
-                    <li><a href="corporate-services.html">Employee Assistance (EAP)</a></li>
-                    <li><a href="corporate-services.html">Team Building & Bonding</a></li>
-                    <li><a href="corporate-services.html">Workplace Debriefing</a></li>
-                    <li><a href="therapy-services.html">Anxiety & Depression</a></li>
-                    <li><a href="therapy-services.html">Stress Management</a></li>
-                    <li><a href="therapy-services.html">Personal Growth</a></li>
-                    <li><a href="therapy-services.html">Trauma Management</a></li>
-                    <li><a href="therapy-services.html">Family & Marriage</a></li>
-                    <li><a href="therapy-services.html">Drug & Substance Abuse</a></li>
+                    <li class="submenu-group">
+                        <button type="button" class="submenu-toggle" aria-expanded="false">Corporate Services</button>
+                        <ul class="submenu-items">
+                            <li><a href="corporate-services.html">Employee Assistance (EAP)</a></li>
+                            <li><a href="corporate-services.html">Team Building & Bonding</a></li>
+                            <li><a href="corporate-services.html">Workplace Debriefing</a></li>
+                        </ul>
+                    </li>
+                    <li class="submenu-group">
+                        <button type="button" class="submenu-toggle" aria-expanded="false">Therapy Services</button>
+                        <ul class="submenu-items">
+                            <li><a href="therapy-services.html">Anxiety & Depression</a></li>
+                            <li><a href="therapy-services.html">Stress Management</a></li>
+                            <li><a href="therapy-services.html">Personal Growth</a></li>
+                            <li><a href="therapy-services.html">Trauma Management</a></li>
+                            <li><a href="therapy-services.html">Family & Marriage</a></li>
+                            <li><a href="therapy-services.html">Drug & Substance Abuse</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
             <li><a href="experiences.html">Experience</a></li>
@@ -224,6 +234,17 @@
             });
         });
 
+        document.querySelectorAll('.submenu-toggle').forEach(button => {
+            button.addEventListener('click', (e) => {
+                if (window.innerWidth <= 900) {
+                    e.preventDefault();
+                    const group = button.closest('.submenu-group');
+                    const isOpen = group.classList.toggle('open');
+                    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                }
+            });
+        });
+
         // Carousel auto-scroll (mobile)
         const carousel = document.querySelector('.carousel-track');
         if (carousel) {
@@ -235,7 +256,7 @@
                     if (carousel.scrollWidth - carousel.scrollLeft <= carousel.clientWidth + 2) {
                         carousel.scrollTo({ left: 0 });
                     } else {
-                        carousel.scrollBy({ left: 2 });
+                        carousel.scrollBy({ left: 4 });
                     }
                 }, 30);
             };
