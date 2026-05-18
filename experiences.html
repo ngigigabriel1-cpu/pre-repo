@@ -61,6 +61,25 @@
         .client-card h4 { margin: 0 0 10px; color: var(--primary); font-size: 1.1rem; }
         .client-card .programs { color: var(--text-gray); font-size: 0.95rem; line-height: 1.6; }
         .client-card .people-count { margin-top: 15px; color: var(--accent); font-weight: 600; }
+
+        .hamburger { display: none; cursor: pointer; font-size: 1.6rem; background: transparent; border: none; padding: 8px 10px; border-radius: 8px; color: var(--text); }
+
+        @media (max-width: 900px) {
+            .navbar { padding: 12px 16px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed; top: 64px; right: 0; width: 100%; max-height: calc(100vh - 64px);
+                background: white; flex-direction: column; align-items: flex-start;
+                padding: 14px 12px; gap: 0; transform: translateY(-10px);
+                transition: transform 0.28s ease, opacity 0.28s ease;
+                opacity: 0; visibility: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+                overflow-y: auto; z-index: 1500;
+            }
+            .nav-links.open { opacity: 1; visibility: visible; transform: translateY(0); }
+            .nav-links a { padding: 12px 18px; width: 100%; display: block; font-size: 1rem; }
+            .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; padding-left: 8px; width: 100%; }
+            .dropdown-menu li a { padding-left: 24px; }
+        }
     </style>
 </head>
 <body>
@@ -86,6 +105,7 @@
             <li><a href="experiences.html">Experience</a></li>
             <li><a href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Consultation+with+Joseph+Nginya+Kiiru&details=Schedule+a+consultation+with+Eden+Consultants&location=Longonot+Place+Nairobi&sf=true" target="_blank" class="btn-nav">Book Consultation</a></li>
         </ul>
+        <div class="hamburger">☰</div>
     </nav>
 
     <header class="page-header">
@@ -333,6 +353,14 @@
             hamburger.addEventListener('click', () => {
                 const navLinks = document.querySelector('.nav-links');
                 navLinks.classList.toggle('open');
+                hamburger.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
+            });
+
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    document.querySelector('.nav-links').classList.remove('open');
+                    hamburger.textContent = '☰';
+                });
             });
         }
     </script>
