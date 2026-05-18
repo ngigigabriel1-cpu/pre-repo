@@ -5,50 +5,254 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Therapy Services | Eden Consultants</title>
     <style>
-        /* Shared Styles */
-        :root { --primary: #4A6C6F; --accent: #D4A373; --text: #2C3E50; }
-        body { margin: 0; font-family: 'Helvetica Neue', sans-serif; background: #fdfbf7; color: var(--text); }
-        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
-        
-        .navbar { background: white; padding: 20px; text-align: center; border-bottom: 1px solid #eee; }
-        .back-link { color: var(--primary); text-decoration: none; font-weight: bold; font-size: 1.1rem; }
+        :root { --primary: #4A6C6F; --accent: #D4A373; --text: #2C3E50; --text-gray: #5a6570; --shadow: 0 20px 40px rgba(0,0,0,0.08); --transition: all 0.3s ease; }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background: #f8f7f2; color: var(--text); }
+        .navbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: white; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
+        .logo-container { font-weight: bold; color: var(--primary); font-size: 1.15rem; }
+        .nav-links { display: flex; gap: 22px; align-items: center; position: relative; }
+        .nav-links a { color: var(--text); font-weight: 500; transition: var(--transition); }
+        .nav-links a:hover { color: var(--accent); }
+        .btn-nav { padding: 10px 25px; background-color: var(--primary); color: white; border-radius: 50px; }
+        .dropdown { position: relative; }
+        .dropdown-menu { position: absolute; top: 120%; left: 0; min-width: 280px; background: white; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: var(--transition); z-index: 100; padding: 12px 0; }
+        .dropdown:hover .dropdown-menu, .dropdown:focus-within .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-menu li { list-style: none; }
+        .dropdown-menu li a { display: block; padding: 12px 24px; color: var(--text); font-weight: 500; transition: var(--transition); border-left: 3px solid transparent; }
+        .dropdown-menu li a:hover { background: linear-gradient(90deg, rgba(212,163,115,0.1), transparent); color: var(--primary); border-left-color: var(--accent); padding-left: 28px; }
+        .dropdown-menu li:first-child a { border-top: none; }
+        .dropdown-menu li:last-child a { border-bottom: none; }
 
-        .page-header { background: var(--accent); color: white; padding: 80px 20px; text-align: center; }
-        .page-header h1 { margin: 0; font-family: 'Georgia', serif; font-size: 3rem; }
+        .page-header { background: var(--accent); color: white; padding: 60px 20px; text-align: center; }
+        .page-header h1 { margin: 0; font-family: 'Georgia', serif; font-size: 2.5rem; }
+        .page-header p { margin-top: 15px; font-size: 1rem; color: rgba(255,255,255,0.9); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px; }
         
-        /* Write-up Section */
-        .write-up { background: white; padding: 50px; margin-top: -40px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 2; }
-        .write-up h2 { color: var(--primary); margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
-        .write-up p { font-size: 1.1rem; line-height: 1.8; color: #555; }
-        
-        .cta-box { margin-top: 40px; background: #f4f8f7; padding: 20px; border-radius: 8px; text-align: center; }
-        .book-btn { background: var(--primary); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold; margin-top: 10px; }
+        .intro-section { background: white; padding: 40px; border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 60px; }
+        .intro-section h2 { color: var(--primary); margin-top: 0; font-size: 1.8rem; }
+        .intro-section p { color: var(--text-gray); line-height: 1.8; font-size: 1.05rem; }
+
+        .service-section { margin-bottom: 60px; background: white; border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
+        .service-header { background: linear-gradient(135deg, #D4A373, #b8865f); color: white; padding: 30px; }
+        .service-header h3 { margin: 0; font-size: 1.6rem; }
+        .service-content { padding: 40px; }
+        .service-content p { color: var(--text-gray); line-height: 1.9; font-size: 1.05rem; margin-bottom: 20px; }
+        .service-content ul { list-style: disc inside; color: var(--text-gray); line-height: 1.9; margin-bottom: 20px; }
+        .service-content li { margin-bottom: 12px; }
+
+        .image-grid-single { display: grid; grid-template-columns: 1fr; gap: 20px; margin: 30px 0; }
+        .image-grid-2col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
+        .image-placeholder { background: #e8e8e8; border-radius: 12px; height: 250px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 0.95rem; text-align: center; padding: 20px; overflow: hidden; }
+        .image-placeholder img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+
+        .read-more-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: var(--accent); color: white; text-decoration: none; border-radius: 50px; font-weight: 600; transition: var(--transition); margin-top: 15px; }
+        .read-more-btn:hover { transform: translateY(-2px); background: #c89a5a; }
     </style>
 </head>
 <body>
-
     <nav class="navbar">
-        <a href="index.html" class="back-link">← Back to Home</a>
+        <div class="logo-container">JOSEPH NGINYA</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li class="dropdown">
+                <a href="index.html#services">Services</a>
+                <ul class="dropdown-menu">
+                    <li><a href="corporate-services.html">Employee Assistance (EAP)</a></li>
+                    <li><a href="corporate-services.html">Team Building & Bonding</a></li>
+                    <li><a href="corporate-services.html">Workplace Debriefing</a></li>
+                    <li><a href="therapy-services.html">Anxiety & Depression</a></li>
+                    <li><a href="therapy-services.html">Stress Management</a></li>
+                    <li><a href="therapy-services.html">Personal Growth</a></li>
+                    <li><a href="therapy-services.html">Trauma Management</a></li>
+                    <li><a href="therapy-services.html">Family & Marriage</a></li>
+                    <li><a href="therapy-services.html">Drug & Substance Abuse</a></li>
+                </ul>
+            </li>
+            <li><a href="experiences.html">Experience</a></li>
+            <li><a href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Consultation+with+Joseph+Nginya+Kiiru&details=Schedule+a+consultation+with+Eden+Consultants&location=Longonot+Place+Nairobi&sf=true" target="_blank" class="btn-nav">Book Consultation</a></li>
+        </ul>
     </nav>
 
     <header class="page-header">
-        <h1>Therapy & Support</h1>
-        <p>A Safe Space for Healing and Growth</p>
+        <h1>Individual Therapy Services</h1>
+        <p>Compassionate, evidence-based care for personal healing and growth</p>
     </header>
 
     <div class="container">
-        <section class="write-up">
-            <h2>Our Therapeutic Approach</h2>
-            <p><strong>[Brief Write-up Slot]</strong></p>
-            <p>Welcome to our therapy services. Here you can describe your methodology (CBT, Trauma-informed care, etc.). E.g., "We provide a confidential, non-judgmental environment where you can explore your feelings..."</p>
-            <p>Whether you are dealing with anxiety, depression, or family conflict, we are here to walk with you.</p>
+        <section class="intro-section">
+            <h2>Your Path to Emotional Wellness</h2>
+            <p>At Eden Consultants, we provide individual therapy designed to help you overcome life's challenges, build emotional resilience, and achieve meaningful personal growth. Our therapy services combine evidence-based practices with compassionate, culturally sensitive support.</p>
+        </section>
 
-            <div class="cta-box">
-                <h3>Ready to talk?</h3>
-                <a href="mailto:nginyahjoseph@edenconsultants.co.ke" class="book-btn">Book a Session</a>
+        <!-- Anxiety & Depression Section -->
+        <section class="service-section">
+            <div class="service-header">
+                <h3>Anxiety & Depression Support</h3>
+            </div>
+            <div class="service-content">
+                <p>Anxiety and depression can feel overwhelming and isolating. Our therapists provide specialized support combining cognitive-behavioral approaches, mindfulness techniques, and practical coping strategies to help you regain control and rediscover joy in life.</p>
+                <p><strong>What We Address:</strong></p>
+                <ul>
+                    <li>Generalized anxiety and panic attacks</li>
+                    <li>Depression and low mood</li>
+                    <li>Social anxiety and phobias</li>
+                    <li>Sleep disturbances and fatigue</li>
+                    <li>Negative thought patterns</li>
+                    <li>Daily functioning and motivation</li>
+                </ul>
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="https://as1.ftcdn.net/v2/jpg/04/06/79/44/1000_F_406794406_bOU849ExleCyCs1alUAJvYa5TB5otx5K.jpg" alt="Therapy support">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="https://img.freepik.com/premium-vector/depression-concept-2-colored-icon-simple-blue-element-illustration-depression-concept-symbol-design-can-be-used-web-mobile-ui-ux_159242-6800.jpg?w=826" alt="Mindfulness and calm">
+                    </div>
+                </div>
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
+            </div>
+        </section>
+
+        <!-- Stress Management Section -->
+        <section class="service-section">
+            <div class="service-header">
+                <h3>Stress Management & Resilience</h3>
+            </div>
+            <div class="service-content">
+                <p>Modern life brings constant stress. We teach practical stress management techniques, build emotional resilience, and help you develop sustainable coping strategies to thrive under pressure while maintaining wellbeing.</p>
+                <p><strong>Our Support Includes:</strong></p>
+                <ul>
+                    <li>Stress identification and assessment</li>
+                    <li>Breathing and relaxation techniques</li>
+                    <li>Work-life balance coaching</li>
+                    <li>Time management and prioritization</li>
+                    <li>Building emotional resilience</li>
+                    <li>Sustainable wellness practices</li>
+                </ul>
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="https://tse3.mm.bing.net/th/id/OIP.YDgr6woUIVhFDpbZwYqJjQHaE8?w=900&h=600&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Relaxation techniques">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="https://media.istockphoto.com/id/1077409024/photo/silhouette-of-a-girl-practicing-yoga.jpg?s=170667a&w=0&k=20&c=Wq4H88-nF8BKue28771UDkBXUUp_0zzkPvrgensNZkc=" alt="Stress relief">
+                    </div>
+                </div>
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
+            </div>
+        </section>
+
+        <!-- Personal Growth Section -->
+        <section class="service-section">
+            <div class="service-header">
+                <h3>Personal Growth & Self-Development</h3>
+            </div>
+            <div class="service-content">
+                <p>Unlock your potential and create the life you envision. Our personal growth therapy helps you develop self-awareness, clarify values, set meaningful goals, and build confidence to overcome obstacles and pursue fulfillment.</p>
+                <p><strong>Growth Areas:</strong></p>
+                <ul>
+                    <li>Self-discovery and personal values</li>
+                    <li>Confidence and self-esteem building</li>
+                    <li>Goal setting and life planning</li>
+                    <li>Personality development</li>
+                    <li>Overcoming limiting beliefs</li>
+                    <li>Life transitions and reinvention</li>
+                </ul>
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="images/IMG-1.jpg" alt="Personal growth">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="https://potentialitycoaching.co.uk/wp-content/uploads/2020/10/shutterstock_686321224-300x214.jpg" alt="Development journey">
+                    </div>
+                </div>
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
+            </div>
+        </section>
+
+        <!-- Trauma Management Section -->
+        <section class="service-section">
+            <div class="service-header">
+                <h3>Trauma Management & Recovery</h3>
+            </div>
+            <div class="service-content">
+                <p>Traumatic experiences can deeply affect your wellbeing. We provide trauma-informed therapy using evidence-based approaches to help you process trauma safely, rebuild trust, and reclaim your sense of safety and control.</p>
+                <p><strong>Services Include:</strong></p>
+                <ul>
+                    <li>Trauma assessment and treatment planning</li>
+                    <li>Safe processing of traumatic memories</li>
+                    <li>Post-traumatic stress symptom management</li>
+                    <li>Rebuilding sense of safety and trust</li>
+                    <li>Resilience and strength building</li>
+                    <li>Integration and moving forward</li>
+                </ul>
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=600&q=80" alt="Trauma support">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="https://tse1.mm.bing.net/th/id/OIP.OFjPOCg8lkM1obrEr8HTpwHaEp?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Recovery journey">
+                    </div>
+                </div>
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
+            </div>
+        </section>
+
+        <!-- Family & Marriage Section -->
+        <section class="service-section">
+            <div class="service-header">
+                <h3>Family & Marriage Counseling</h3>
+            </div>
+            <div class="service-content">
+                <p>Relationships shape our lives. We provide couples and family therapy to help improve communication, resolve conflicts, rebuild intimacy, and strengthen family bonds through practical tools and compassionate guidance.</p>
+                <p><strong>We Help With:</strong></p>
+                <ul>
+                    <li>Couples communication and conflict resolution</li>
+                    <li>Relationship rebuilding and intimacy</li>
+                    <li>Family dynamics and parenting challenges</li>
+                    <li>Pre-marital and marital counseling</li>
+                    <li>Separation and blended family issues</li>
+                    <li>Grief and loss within families</li>
+                </ul>
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=600&q=80" alt="Couples counseling">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=600&q=80" alt="Family support">
+                    </div>
+                </div>
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
+            </div>
+        </section>
+
+        <!-- Drug & Substance Abuse Section -->
+        <section class="service-section">
+            <div class="service-header">
+                <h3>Drug & Substance Abuse Counseling</h3>
+            </div>
+            <div class="service-content">
+                <p>Substance abuse affects individuals, families, and communities. We provide evidence-based counseling and support to help you or your loved ones understand addiction, develop healthy coping strategies, and build a path to recovery.</p>
+                <p><strong>Our Approach:</strong></p>
+                <ul>
+                    <li>Addiction assessment and evaluation</li>
+                    <li>Individual counseling and support groups</li>
+                    <li>Family education and involvement</li>
+                    <li>Relapse prevention strategies</li>
+                    <li>Underlying issues exploration</li>
+                    <li>Referrals to specialized treatment</li>
+                </ul>
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="https://cdn.slidesharecdn.com/ss_thumbnails/englishassignment-210322170135-thumbnail.jpg?width=640&height=640&fit=bounds" alt="Recovery support">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="https://images.prestigeonline.com/wp-content/uploads/sites/5/2021/08/25150137/gettyimages_638.b97e6101850.original-1350x900.jpg" alt="Healing journey">
+                    </div>
+                </div>
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
             </div>
         </section>
     </div>
-
 </body>
 </html>

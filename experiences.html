@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Experience | Eden Consultants</title>
+    <style>
+        :root { --primary: #4A6C6F; --accent: #D4A373; --text: #2C3E50; --text-gray: #5f6b72; --shadow: 0 24px 60px rgba(0,0,0,0.08); --transition: all 0.3s ease; }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background: #f8f7f2; color: var(--text); }
+        .navbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: white; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
+        .logo-container { font-weight: bold; color: var(--primary); font-size: 1.15rem; }
+        .nav-links { display: flex; gap: 22px; align-items: center; position: relative; }
+        .nav-links a { color: var(--text); font-weight: 500; transition: var(--transition); }
+        .nav-links a:hover { color: var(--accent); }
+        .btn-nav { padding: 10px 25px; background-color: var(--primary); color: white; border-radius: 50px; }
+        .dropdown { position: relative; }
+        .dropdown-menu { position: absolute; top: 120%; left: 0; min-width: 280px; background: white; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: var(--transition); z-index: 100; padding: 12px 0; }
+        .dropdown:hover .dropdown-menu, .dropdown:focus-within .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-menu li { list-style: none; }
+        .dropdown-menu li a { display: block; padding: 12px 24px; color: var(--text); font-weight: 500; transition: var(--transition); border-left: 3px solid transparent; }
+        .dropdown-menu li a:hover { background: linear-gradient(90deg, rgba(212,163,115,0.1), transparent); color: var(--primary); border-left-color: var(--accent); padding-left: 28px; }
+        .dropdown-menu li:first-child a { border-top: none; }
+        .dropdown-menu li:last-child a { border-bottom: none; }
+
+        .page-header { background: var(--primary); color: white; padding: 60px 20px; text-align: center; }
+        .page-header h1 { margin: 0; font-family: 'Georgia', serif; font-size: 2.5rem; }
+        .page-header p { margin-top: 15px; font-size: 1rem; color: rgba(255,255,255,0.92); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px; }
+        
+        .intro-section { background: white; padding: 40px; border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 60px; }
+        .intro-section h2 { color: var(--primary); margin-top: 0; font-size: 1.8rem; }
+        .intro-section p { color: var(--text-gray); line-height: 1.8; font-size: 1.05rem; margin-bottom: 20px; }
+        .intro-section ul { list-style: disc inside; color: var(--text-gray); line-height: 1.9; margin: 20px 0; }
+        .intro-section li { margin-bottom: 12px; }
+
+        .experience-section { margin-bottom: 60px; background: white; border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
+        .experience-header { background: linear-gradient(135deg, #D4A373, #b8865f); color: white; padding: 30px; }
+        .experience-header h3 { margin: 0; font-size: 1.6rem; }
+        .experience-header .clients-count { margin-top: 8px; font-size: 0.95rem; color: rgba(255,255,255,0.9); }
+        .experience-content { padding: 40px; }
+        .experience-content p { color: var(--text-gray); line-height: 1.9; font-size: 1.05rem; margin-bottom: 20px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
+        .stat-card { background: #f8f7f2; padding: 25px; border-radius: 12px; border-left: 4px solid var(--accent); }
+        .stat-card .number { font-size: 2rem; font-weight: bold; color: var(--primary); transition: all 0.3s ease; }
+        .stat-card .label { color: var(--text-gray); margin-top: 8px; font-size: 0.95rem; }
+
+        .image-grid-2col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
+        .image-placeholder { background: #e8e8e8; border-radius: 12px; height: 250px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 0.95rem; text-align: center; padding: 20px; overflow: hidden; }
+        .image-placeholder img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+
+        .read-more-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: var(--accent); color: white; text-decoration: none; border-radius: 50px; font-weight: 600; transition: var(--transition); margin-top: 15px; }
+        .read-more-btn:hover { transform: translateY(-2px); background: #c89a5a; }
+
+        .clients-section { margin-top: 60px; }
+        .section-title { text-align: center; margin-bottom: 40px; font-size: 2rem; color: var(--primary); font-weight: bold; }
+        .clients-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .client-card { background: white; padding: 30px; border-radius: 12px; box-shadow: var(--shadow); border-top: 4px solid var(--accent); }
+        .client-card h4 { margin: 0 0 10px; color: var(--primary); font-size: 1.1rem; }
+        .client-card .programs { color: var(--text-gray); font-size: 0.95rem; line-height: 1.6; }
+        .client-card .people-count { margin-top: 15px; color: var(--accent); font-weight: 600; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo-container">JOSEPH NGINYA</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li class="dropdown">
+                <a href="index.html#services">Services</a>
+                <ul class="dropdown-menu">
+                    <li><a href="corporate-services.html">Employee Assistance (EAP)</a></li>
+                    <li><a href="corporate-services.html">Team Building & Bonding</a></li>
+                    <li><a href="corporate-services.html">Workplace Debriefing</a></li>
+                    <li><a href="therapy-services.html">Anxiety & Depression</a></li>
+                    <li><a href="therapy-services.html">Stress Management</a></li>
+                    <li><a href="therapy-services.html">Personal Growth</a></li>
+                    <li><a href="therapy-services.html">Trauma Management</a></li>
+                    <li><a href="therapy-services.html">Family & Marriage</a></li>
+                    <li><a href="therapy-services.html">Drug & Substance Abuse</a></li>
+                </ul>
+            </li>
+            <li><a href="experiences.html">Experience</a></li>
+            <li><a href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Consultation+with+Joseph+Nginya+Kiiru&details=Schedule+a+consultation+with+Eden+Consultants&location=Longonot+Place+Nairobi&sf=true" target="_blank" class="btn-nav">Book Consultation</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <h1>Our Experience</h1>
+        <p>Proven expertise serving organizations across East Africa</p>
+    </header>
+
+    <div class="container">
+        <section class="intro-section">
+            <h2>Trusted Partner for Organizational Transformation</h2>
+            <p>Eden Consultants brings years of proven experience serving diverse organizations across Kenya, East Africa, and international contexts. Our team has designed and facilitated transformative programs for major corporations, NGOs, government agencies, and UN organizations.</p>
+            <p><strong>Our Impact:</strong></p>
+            <ul>
+                <li>50+ organizations trained across multiple sectors</li>
+                <li>2,000+ professionals and staff members engaged</li>
+                <li>Proven success in crisis intervention, team transformation, and staff wellbeing</li>
+                <li>Trusted by UNHCR, WHO, CDC, and leading Kenyan institutions</li>
+                <li>Expert facilitators with strong psychology and organizational backgrounds</li>
+            </ul>
+        </section>
+
+        <!-- Why Choose Eden Section -->
+        <section class="experience-section">
+            <div class="experience-header">
+                <h3>Why Partner With Eden Consultants?</h3>
+            </div>
+            <div class="experience-content">
+                <p>Our consultants bring diverse expertise in psychology, organizational dynamics, group facilitation, and behavior change. We combine clinical credentials with extensive training experience to deliver programs that create lasting transformation.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">50+</div>
+                        <div class="label">Organizations Served</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">2,000+</div>
+                        <div class="label">Professionals Trained</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">100+</div>
+                        <div class="label">Programs Delivered</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">25+</div>
+                        <div class="label">Years Combined Experience</div>
+                    </div>
+                </div>
+
+                <p><strong>Our Unique Strengths:</strong></p>
+                <ul style="list-style: disc inside; color: var(--text-gray); line-height: 1.9; margin-bottom: 20px;">
+                    <li>Deep expertise in behavior change and organizational psychology</li>
+                    <li>Trained facilitation team with psychology backgrounds</li>
+                    <li>Customized solutions addressing your specific needs</li>
+                    <li>Evidence-based approaches combined with practical application</li>
+                    <li>Strong track record of transformation and measurable results</li>
+                </ul>
+
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="images/img 13.jpg" alt="Workshop facilitator">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="images/img 17.jpg" alt="Team training session">
+                    </div>
+                </div>
+
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
+            </div>
+        </section>
+
+        <!-- Our Team Section -->
+        <section class="experience-section">
+            <div class="experience-header">
+                <h3>Expert Facilitators & Consultants</h3>
+            </div>
+            <div class="experience-content">
+                <p>Our team comprises certified psychologists, counselors, trainers, and organizational consultants with diverse backgrounds and deep expertise. Each team member is vetted for competence and holds relevant professional credentials.</p>
+                
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="images/img 16.jpg" alt="Lead consultant">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="images/img 12.jpg" alt="Team collaboration">
+                    </div>
+                </div>
+
+                <p style="margin-top: 30px;"><strong>Joseph Nginya Kiiru - Founder & Lead Consultant</strong></p>
+                <p>Joseph is a Consulting Psychologist and Behavior Change Consultant with specialized expertise in organizational psychology. He holds a Bachelor of Arts in Psychology and Master's degrees in both Clinical Psychology and Psychology & Counseling. Joseph is a certified TOT (Trainer of Trainers) and serves as a part-time lecturer at Daystar University and Africa Nazarene University's Psychology faculties. With experience consulting for international organizations including UNHCR, WHO, and CDC, Joseph brings clinical rigor and proven facilitation excellence.</p>
+
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
+            </div>
+        </section>
+
+        <!-- Key Clients Section -->
+        <div class="clients-section">
+            <h2 class="section-title">Organizations We've Served</h2>
+            <div class="clients-grid">
+                <div class="client-card">
+                    <h4>UNHCR (United Nations Refugee Agency)</h4>
+                    <div class="programs">
+                        • Staff wellness programs<br>
+                        • Stress management training<br>
+                        • Team building & bonding<br>
+                        • Workplace resilience<br>
+                        • Code of conduct facilitation
+                    </div>
+                    <div class="people-count">1,350+ staff trained across Kenya, Sudan & Ethiopia</div>
+                </div>
+
+                <div class="client-card">
+                    <h4>WHO (World Health Organization)</h4>
+                    <div class="programs">
+                        • Self-awareness & group dynamics<br>
+                        • Workplace stress management<br>
+                        • Team building programs<br>
+                        • Emotional intelligence training
+                    </div>
+                    <div class="people-count">100+ staff members</div>
+                </div>
+
+                <div class="client-card">
+                    <h4>Ministry of Foreign Affairs</h4>
+                    <div class="programs">
+                        • Workplace stress management<br>
+                        • Team building & bonding<br>
+                        • Emotional intelligence coaching<br>
+                        • Cadre development
+                    </div>
+                    <div class="people-count">130+ new cadets</div>
+                </div>
+
+                <div class="client-card">
+                    <h4>Sankara Eye Care</h4>
+                    <div class="programs">
+                        • Self-awareness training<br>
+                        • Soft skills development<br>
+                        • Customer care excellence<br>
+                        • Team bonding
+                    </div>
+                    <div class="people-count">250+ staff members</div>
+                </div>
+
+                <div class="client-card">
+                    <h4>Kenya Tea Development Authority (KTDA)</h4>
+                    <div class="programs">
+                        • Employment separation programs<br>
+                        • Drugs & substance abuse counseling<br>
+                        • Retrenchment support<br>
+                        • Staff wellness
+                    </div>
+                    <div class="people-count">200+ retrenchees</div>
+                </div>
+
+                <div class="client-card">
+                    <h4>Kenya Wildlife Service (KWS)</h4>
+                    <div class="programs">
+                        • Team building programs<br>
+                        • Stress management training<br>
+                        • Leadership development<br>
+                        • Departmental cohesion
+                    </div>
+                    <div class="people-count">30+ departmental heads</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Gallery Section -->
+        <div style="margin-top: 80px;">
+            <h2 class="section-title">Recent Project Gallery</h2>
+            <div class="image-grid-2col" style="margin-bottom: 40px;">
+                <div class="image-placeholder">
+                    <img src="images/img 20.jpg" alt="Workshop session">
+                </div>
+                <div class="image-placeholder">
+                    <img src="images/img 15.jpg" alt="Team training">
+                </div>
+                <div class="image-placeholder">
+                    <img src="images/img 10.jpg" alt="Corporate event">
+                </div>
+                <div class="image-placeholder">
+                    <img src="images/img 9.jpg" alt="Facilitation moment">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Counter Animation
+        const counters = {
+            '50': 50,      // Organizations
+            '2000': 2000,  // Professionals trained
+            '100': 100,    // Programs delivered
+            '25': 25       // Years experience
+        };
+
+        let hasCountedUp = false;
+
+        const animateCounter = (element, target, duration = 2000) => {
+            const stepDuration = duration / target;
+            let current = 0;
+
+            const counter = setInterval(() => {
+                current += Math.max(Math.ceil(target / 50), 1);
+                if (current >= target) {
+                    current = target;
+                    clearInterval(counter);
+                }
+                element.textContent = current.toLocaleString();
+            }, stepDuration);
+        };
+
+        const statsSection = document.querySelector('.stats-grid');
+
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasCountedUp) {
+                    hasCountedUp = true;
+                    const statNumbers = document.querySelectorAll('.stat-card .number');
+                    
+                    statNumbers.forEach(numberEl => {
+                        const targets = Object.values(counters);
+                        const index = Array.from(statNumbers).indexOf(numberEl);
+                        const target = targets[index];
+                        animateCounter(numberEl, target, 2000);
+                    });
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        if (statsSection) {
+            observer.observe(statsSection);
+        }
+
+        // Mobile Dropdown
+        const hamburger = document.querySelector('.hamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                const navLinks = document.querySelector('.nav-links');
+                navLinks.classList.toggle('open');
+            });
+        }
+    </script>
+</body>
+</html>

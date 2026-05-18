@@ -5,70 +5,191 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corporate Services | Eden Consultants</title>
     <style>
-        /* Shared Styles */
-        :root { --primary: #4A6C6F; --accent: #D4A373; --text: #2C3E50; }
-        body { margin: 0; font-family: 'Helvetica Neue', sans-serif; background: #fdfbf7; color: var(--text); }
-        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
-        
-        /* Nav Simplified */
-        .navbar { background: white; padding: 20px; text-align: center; border-bottom: 1px solid #eee; }
-        .back-link { color: var(--primary); text-decoration: none; font-weight: bold; font-size: 1.1rem; }
+        :root { --primary: #4A6C6F; --accent: #D4A373; --text: #2C3E50; --text-gray: #5f6b72; --shadow: 0 24px 60px rgba(0,0,0,0.08); --transition: all 0.3s ease; }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background: #f8f7f2; color: var(--text); }
+        .navbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: white; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
+        .logo-container { font-weight: bold; color: var(--primary); font-size: 1.15rem; }
+        .nav-links { display: flex; gap: 22px; align-items: center; position: relative; }
+        .nav-links a { color: var(--text); font-weight: 500; transition: var(--transition); }
+        .nav-links a:hover { color: var(--accent); }
+        .btn-nav { padding: 10px 25px; background-color: var(--primary); color: white; border-radius: 50px; }
+        .dropdown { position: relative; }
+        .dropdown-menu { position: absolute; top: 120%; left: 0; min-width: 280px; background: white; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: var(--transition); z-index: 100; padding: 12px 0; }
+        .dropdown:hover .dropdown-menu, .dropdown:focus-within .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-menu li { list-style: none; }
+        .dropdown-menu li a { display: block; padding: 12px 24px; color: var(--text); font-weight: 500; transition: var(--transition); border-left: 3px solid transparent; }
+        .dropdown-menu li a:hover { background: linear-gradient(90deg, rgba(212,163,115,0.1), transparent); color: var(--primary); border-left-color: var(--accent); padding-left: 28px; }
+        .dropdown-menu li:first-child a { border-top: none; }
+        .dropdown-menu li:last-child a { border-bottom: none; }
 
-        /* Page Content */
-        .page-header { background: var(--primary); color: white; padding: 80px 20px; text-align: center; }
-        .page-header h1 { margin: 0; font-family: 'Georgia', serif; font-size: 3rem; }
-        
-        /* Write-up Section */
-        .write-up { background: white; padding: 40px; margin-top: -40px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 2; }
-        .write-up h2 { color: var(--accent); margin-top: 0; }
+        .page-header { background: var(--primary); color: white; padding: 60px 20px; text-align: center; }
+        .page-header h1 { margin: 0; font-family: 'Georgia', serif; font-size: 2.5rem; }
+        .page-header p { margin-top: 15px; font-size: 1rem; color: rgba(255,255,255,0.92); }
 
-        /* Gallery Section */
-        .gallery-title { text-align: center; margin: 60px 0 30px; color: var(--primary); }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .gallery-item { height: 250px; background: #ddd; border-radius: 8px; overflow: hidden; position: relative; transition: 0.3s; }
-        .gallery-item:hover { transform: scale(1.02); }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px; }
         
-        /* Placeholder styling for empty gallery slots */
-        .gallery-placeholder { display: flex; align-items: center; justify-content: center; background: #e0e0e0; color: #888; height: 100%; }
+        .intro-section { background: white; padding: 40px; border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 60px; }
+        .intro-section h2 { color: var(--accent); margin-top: 0; font-size: 1.8rem; }
+        .intro-section p { color: var(--text-gray); line-height: 1.8; font-size: 1.05rem; }
+
+        .service-section { margin-bottom: 60px; background: white; border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
+        .service-header { background: linear-gradient(135deg, var(--primary), var(--primary-dark, #2F4F4F)); color: white; padding: 30px; }
+        .service-header h3 { margin: 0; font-size: 1.6rem; }
+        .service-content { padding: 40px; }
+        .service-content p { color: var(--text-gray); line-height: 1.9; font-size: 1.05rem; margin-bottom: 20px; }
+        .service-content ul { list-style: disc inside; color: var(--text-gray); line-height: 1.9; margin-bottom: 20px; }
+        .service-content li { margin-bottom: 12px; }
+
+        .image-grid-2col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
+        .image-placeholder { background: #e8e8e8; border-radius: 12px; height: 250px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 0.95rem; text-align: center; padding: 20px; }
+        .image-placeholder img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+
+        .read-more-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: var(--accent); color: white; text-decoration: none; border-radius: 50px; font-weight: 600; transition: var(--transition); margin-top: 15px; }
+        .read-more-btn:hover { transform: translateY(-2px); background: #c89a5a; }
+
+        .gallery-title { text-align: center; margin: 60px 0 30px; color: var(--primary); font-size: 2rem; font-weight: bold; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 60px; }
+        .gallery-item { border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); }
+        .gallery-item:hover { transform: translateY(-4px); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 280px; }
     </style>
 </head>
 <body>
-
     <nav class="navbar">
-        <a href="index.html" class="back-link">← Back to Home</a>
+        <div class="logo-container">JOSEPH NGINYA</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li class="dropdown">
+                <a href="index.html#services">Services</a>
+                <ul class="dropdown-menu">
+                    <li><a href="corporate-services.html">Employee Assistance (EAP)</a></li>
+                    <li><a href="corporate-services.html">Team Building & Bonding</a></li>
+                    <li><a href="corporate-services.html">Workplace Debriefing</a></li>
+                    <li><a href="therapy-services.html">Anxiety & Depression</a></li>
+                    <li><a href="therapy-services.html">Stress Management</a></li>
+                    <li><a href="therapy-services.html">Personal Growth</a></li>
+                    <li><a href="therapy-services.html">Trauma Management</a></li>
+                    <li><a href="therapy-services.html">Family & Marriage</a></li>
+                    <li><a href="therapy-services.html">Drug & Substance Abuse</a></li>
+                </ul>
+            </li>
+            <li><a href="experiences.html">Experience</a></li>
+            <li><a href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Consultation+with+Joseph+Nginya+Kiiru&details=Schedule+a+consultation+with+Eden+Consultants&location=Longonot+Place+Nairobi&sf=true" target="_blank" class="btn-nav">Book Consultation</a></li>
+        </ul>
     </nav>
 
     <header class="page-header">
         <h1>Corporate Services</h1>
-        <p>Building Stronger Teams for Tomorrow</p>
+        <p>Building stronger teams, improving wellbeing, and supporting organizational resilience</p>
     </header>
 
     <div class="container">
-        <section class="write-up">
-            <h2>Our Approach</h2>
-            <p><strong>[Brief Write-up Slot]</strong></p>
-            <p>Here you can describe your EAP programs, team building philosophy, and how you help organizations thrive. E.g., "At Eden Consultants, we believe a healthy team is a productive team..."</p>
-            <br>
-            <p>We tailor our training to meet the specific needs of your staff, ensuring maximum engagement and long-term results.</p>
+        <section class="intro-section">
+            <h2>Organizational Success Through People Care</h2>
+            <p>At Eden Consultants, we understand that employee personal and work-related problems directly impact organizational productivity and corporate image. Our corporate programs strengthen employees' ability to cope with challenges, enrich work relationships, and support sustainable organizational performance. We combine assessment, counseling, and practical training to meet your organization's unique needs.</p>
         </section>
 
-        <h2 class="gallery-title">Event Gallery</h2>
+        <!-- Employee Assistance Program Section -->
+        <section class="service-section">
+            <div class="service-header">
+                <h3>Employee Assistance Program (EAP)</h3>
+            </div>
+            <div class="service-content">
+                <p>Our Employee Assistance Programs provide comprehensive support to help employees navigate personal and professional challenges. We offer personalized assessment, counseling, psychotherapy, and referral services designed to strengthen employee resilience and organizational wellbeing.</p>
+                <p><strong>What We Provide:</strong></p>
+                <ul>
+                    <li>Individual counseling and psychotherapy sessions</li>
+                    <li>Psychological assessment and evaluation</li>
+                    <li>Referral services to specialized resources</li>
+                    <li>Crisis intervention and support</li>
+                    <li>Workplace wellness program design</li>
+                    <li>Stress management and coping strategies</li>
+                </ul>
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="images/img 14.jpg" alt="Employee support session">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="images/img 18.jpg" alt="Wellness support">
+                    </div>
+                </div>
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
+            </div>
+        </section>
+
+        <!-- Team Building Section -->
+        <section class="service-section">
+            <div class="service-header">
+                <h3>Team Building & Bonding</h3>
+            </div>
+            <div class="service-content">
+                <p>Strengthen interpersonal relationships, improve communication, and build cohesive teams through our experiential team building programs. We design customized sessions that enhance group dynamics, foster trust, and create positive workplace culture.</p>
+                <p><strong>Our Programs Include:</strong></p>
+                <ul>
+                    <li>Experiential team building workshops</li>
+                    <li>Group dynamics and cohesion training</li>
+                    <li>Soft skills development (communication, collaboration)</li>
+                    <li>Leadership and emotional intelligence building</li>
+                    <li>Personality development and self-awareness</li>
+                    <li>Conflict resolution and effective communication</li>
+                </ul>
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="images/img 8.jpg" alt="Team building activity">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="images/img 13.jpg" alt="Group collaboration">
+                    </div>
+                </div>
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
+            </div>
+        </section>
+
+        <!-- Workplace Debriefing Section -->
+        <section class="service-section">
+            <div class="service-header">
+                <h3>Workplace Debriefing & Critical Incident Support</h3>
+            </div>
+            <div class="service-content">
+                <p>Support your team through challenging events with professional psychological debriefing. Our trained psychologists provide crisis intervention and trauma counseling to help employees process difficult experiences and return to normal functioning.</p>
+                <p><strong>Services Include:</strong></p>
+                <ul>
+                    <li>Psychological first aid and crisis intervention</li>
+                    <li>Critical incident debriefing sessions</li>
+                    <li>Trauma counseling and support</li>
+                    <li>Group and individual debriefing</li>
+                    <li>Ongoing psychological support and monitoring</li>
+                    <li>Return-to-work assistance programs</li>
+                </ul>
+                <div class="image-grid-2col">
+                    <div class="image-placeholder">
+                        <img src="images/IMG-5.jpg" alt="Support session">
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="images/IMG-6.jpg" alt="Team support">
+                    </div>
+                </div>
+                <a href="https://1drv.ms/b/c/382fc7902cbacf0f/IQAKSKM6iClkTZljsLScT8pzAQmyYQiAJLu6JfzykYVghaM?e=f1EHxR" class="read-more-btn" target="_blank">📄 Read Full Profile</a>
+            </div>
+        </section>
+
+        <h2 class="gallery-title">Recent Corporate Sessions</h2>
         <div class="gallery-grid">
             <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" alt="Team Building">
+                <img src="images/IMG-2.jpg" alt="Corporate workshop">
             </div>
             <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=600&q=80" alt="Conference">
+                <img src="images/IMG-3.jpg" alt="Team building event">
             </div>
             <div class="gallery-item">
-                <div class="gallery-placeholder">Add Image Here</div>
+                <img src="images/IMG-1.jpg" alt="Leadership training">
             </div>
             <div class="gallery-item">
-                <div class="gallery-placeholder">Add Image Here</div>
+                <img src="images/IMG-4.jpg" alt="Employee wellbeing session">
             </div>
         </div>
     </div>
-
 </body>
 </html>
