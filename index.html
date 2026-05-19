@@ -12,7 +12,7 @@
         <div class="logo-container">
             <span>JOSEPH NGINYA</span>
         </div>
-        <ul class="nav-links">
+        <ul id="main-nav" class="nav-links" role="menu">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About Joseph</a></li>
             <li class="dropdown">
@@ -42,7 +42,7 @@
             <li><a href="experiences.html">Experience</a></li>
             <li><a href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Consultation+with+Joseph+Nginya+Kiiru&details=Schedule+a+consultation+with+Eden+Consultants&location=Longonot+Place+Nairobi&sf=true" target="_blank" class="btn-nav">Book Consultation</a></li>
         </ul>
-        <div class="hamburger">☰</div>
+        <button id="hamburger" class="hamburger" aria-controls="main-nav" aria-expanded="false" aria-label="Open navigation">☰</button>
     </nav>
 
     <header id="home" class="hero">
@@ -57,7 +57,7 @@
         </div>
         
         <div class="hero-image-container reveal">
-            <img src="images/backman.jpg" alt="Joseph Nginya" class="responsive hero-img-contain">
+            <img src="images/backman.jpg" alt="Joseph Nginya" class="responsive hero-img-contain hero-image-mobile" loading="lazy" decoding="async" fetchpriority="low">
         </div>
     </header>
 
@@ -191,76 +191,6 @@
         </div>
     </footer>
 
-    <script>
-        // Mobile Menu + Dropdown toggle + overlay + carousel auto-scroll
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-
-        const setNavOpen = (open) => {
-            navLinks.classList.toggle('open', open);
-            hamburger.textContent = open ? '✕' : '☰';
-            hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
-            if (open) {
-                if (!document.getElementById('nav-overlay')) {
-                    const ov = document.createElement('div'); ov.id = 'nav-overlay';
-                    ov.style.position = 'fixed'; ov.style.left = '0'; ov.style.top = '0'; ov.style.right = '0'; ov.style.bottom = '0';
-                    ov.style.zIndex = '1400'; ov.addEventListener('click', () => setNavOpen(false));
-                    document.body.appendChild(ov);
-                }
-            } else {
-                const ov = document.getElementById('nav-overlay'); if (ov) ov.remove();
-            }
-        };
-
-        hamburger.addEventListener('click', () => setNavOpen(!navLinks.classList.contains('open')) );
-
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                setNavOpen(false);
-            });
-        });
-
-        // Dropdown toggle for touch devices
-        document.querySelectorAll('.dropdown > a').forEach(anchor => {
-            anchor.setAttribute('aria-haspopup', 'true');
-            anchor.setAttribute('aria-expanded', 'false');
-            anchor.addEventListener('click', (e) => {
-                if (window.innerWidth <= 900) {
-                    e.preventDefault();
-                    const li = anchor.parentElement;
-                    const isOpen = li.classList.toggle('open');
-                    anchor.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                }
-            });
-        });
-
-        document.querySelectorAll('.submenu-toggle').forEach(button => {
-            button.addEventListener('click', (e) => {
-                if (window.innerWidth <= 900) {
-                    e.preventDefault();
-                    const group = button.closest('.submenu-group');
-                    const isOpen = group.classList.toggle('open');
-                    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                }
-            });
-        });
-
-        // Carousel auto-scroll is handled by CSS animation for mobile
-
-        // Scroll Animation
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealOnScroll = () => {
-            const windowHeight = window.innerHeight;
-            const elementVisible = 150;
-            revealElements.forEach((reveal) => {
-                const elementTop = reveal.getBoundingClientRect().top;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveal.classList.add('active');
-                }
-            });
-        };
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll(); // Trigger on load
-    </script>
+    <script src="work.js" defer></script>
 </body>
 </html>
