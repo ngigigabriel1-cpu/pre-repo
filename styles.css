@@ -85,7 +85,8 @@
             z-index: 1000;
         }
         .dropdown:hover .dropdown-menu,
-        .dropdown:focus-within .dropdown-menu {
+        .dropdown:focus-within .dropdown-menu,
+        .dropdown.open > .dropdown-menu {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
@@ -124,7 +125,6 @@
         }
 
         .hamburger { display: none; cursor: pointer; font-size: 1.5rem; }
-        .submenu-toggle { display: none; }
 
         /* Mobile nav overlay backdrop */
         #nav-overlay {
@@ -185,7 +185,7 @@
             font-weight: 600;
             padding: 12px 24px;
             text-align: left;
-            display: flex;
+            display: inline-flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
@@ -194,7 +194,8 @@
         .submenu-group.open > .submenu-toggle::after { transform: rotate(90deg); }
         .submenu-items { display: none; }
         .dropdown:hover .submenu-items,
-        .submenu-group:hover .submenu-items { display: block; }
+        .submenu-group:hover .submenu-items,
+        .submenu-group.open > .submenu-items { display: block; }
         .submenu-items li a { padding-left: 30px; }
 
         /* --- 4. ABOUT SECTION --- */
@@ -481,6 +482,7 @@
             }
 
             /* Dropdown on mobile - toggle with .open class */
+            .dropdown > a { display: flex; align-items: center; justify-content: space-between; width: 100%; }
             .dropdown > a::after { 
                 content: '▸'; 
                 margin-left: auto;

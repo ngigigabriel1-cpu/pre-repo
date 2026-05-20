@@ -39,7 +39,15 @@
   // Close menus when clicking outside
   document.addEventListener('click', (e)=>{
     const insideNav = e.target.closest('.example-navbar');
-    if(!insideNav){ setMenu(false); document.querySelectorAll('.has-submenu.open').forEach(el=>el.classList.remove('open')) }
+    if(!insideNav){
+      setMenu(false);
+      document.querySelectorAll('.has-submenu.open').forEach(el=>el.classList.remove('open'));
+      document.querySelectorAll('.submenu-toggle').forEach(btn=>btn.setAttribute('aria-expanded','false'));
+    }
+  });
+
+  window.addEventListener('resize', ()=>{
+    if(window.innerWidth > 900) setMenu(false);
   });
 
   // Keyboard: allow Escape to close menus

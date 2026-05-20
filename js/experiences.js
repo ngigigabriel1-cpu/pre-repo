@@ -1,7 +1,37 @@
+/* Counter animation */
+(function(){
+    var counted = false;
+    var statsSection = document.querySelector('.stats-grid');
+    if(!statsSection) return;
+    function animateCounter(el, target){
+        var current = 0;
+        var step = Math.max(1, Math.ceil(target / 60));
+        var timer = setInterval(function(){
+            current += step;
+            if(current >= target){ current = target; clearInterval(timer); }
+            el.textContent = current.toLocaleString() + (el.dataset.target >= 50 ? '+' : '+');
+        }, 30);
+    }
+    var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+            if(entry.isIntersecting && !counted){
+                counted = true;
+                document.querySelectorAll('.stat-card .number').forEach(function(el){
+                    var target = parseInt(el.dataset.target, 10);
+                    if(target) animateCounter(el, target);
+                });
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.4 });
+    observer.observe(statsSection);
+})();
+
 (function () {
   /* ── Element refs ── */
   const hamburger = document.getElementById('hamburger');
   const navLinks  = document.getElementById('main-nav');
+  if(!hamburger||!navLinks) return;
 
   /* ── Hamburger: open / close the slide-in panel ── */
   function setMenu(open) {

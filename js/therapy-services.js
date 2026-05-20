@@ -2,6 +2,7 @@
   /* ── Element refs ── */
   const hamburger = document.getElementById('hamburger');
   const navLinks  = document.getElementById('main-nav');
+  if(!hamburger||!navLinks) return;
 
   /* ── Hamburger: open / close the slide-in panel ── */
   function setMenu(open) {
